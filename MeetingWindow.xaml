@@ -1,0 +1,168 @@
+<Window x:Class="RoomTalk.MeetingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RoomTalk - Cuộc họp"
+        Icon="Image/RoomTalk.ico"
+        Width="1220"
+        Height="760"
+        MinWidth="980"
+        MinHeight="650"
+        WindowStartupLocation="CenterOwner"
+        Background="#0F172A">
+    <Window.Resources>
+        <Style x:Key="MeetingControlButton" TargetType="Button">
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="MinWidth" Value="130"/>
+            <Setter Property="Padding" Value="18,6"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="78"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="82"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#111827" Padding="22,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Cuộc họp RoomTalk"
+                               Foreground="White"
+                               FontSize="24"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="Camera, microphone và chia sẻ màn hình"
+                               Foreground="#94A3B8"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <TextBlock Text="Phiên bản giao diện thử nghiệm"
+                               Foreground="#FBBF24"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Right"/>
+                    <TextBlock x:Name="UsernameText"
+                               Foreground="#94A3B8"
+                               Margin="0,4,0,0"
+                               HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Margin="0,0,12,0"
+                    Background="#020617"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                MaxWidth="620">
+                        <Border Width="100" Height="100" CornerRadius="50" Background="#1E293B">
+                            <TextBlock Text="CAM"
+                                       Foreground="#94A3B8"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="24"
+                                       FontWeight="Bold"/>
+                        </Border>
+                        <TextBlock Text="Khu vực hiển thị camera và chia sẻ màn hình"
+                                   Foreground="White"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Margin="0,22,0,0"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Hiện tại mới bổ sung bố cục hai chế độ. Camera, WebRTC và chia sẻ màn hình sẽ được nối sau khi phần thu/phát âm thanh hoạt động ổn định."
+                                   Foreground="#94A3B8"
+                                   FontSize="14"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   LineHeight="21"
+                                   Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="#F8FAFC"
+                    CornerRadius="10"
+                    Padding="16">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Text="Người tham gia" FontSize="18" FontWeight="SemiBold"/>
+                        <TextBlock Text="1 người trong phòng"
+                                   Foreground="#64748B"
+                                   Margin="0,4,0,14"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <Border Background="White"
+                                BorderBrush="#E2E8F0"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="42"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Width="34" Height="34" CornerRadius="17" Background="#DBEAFE">
+                                    <TextBlock Text="ME"
+                                               Foreground="#1D4ED8"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="ParticipantNameText" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Bạn · Chưa bật media" Foreground="#64748B" FontSize="12"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Background="#111827" Padding="16">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="Bật microphone"
+                        Style="{StaticResource MeetingControlButton}"
+                        Background="#334155"
+                        Foreground="White"
+                        IsEnabled="False"
+                        ToolTip="Sẽ tích hợp cùng WebRTC ở bước sau"/>
+                <Button Content="Bật camera"
+                        Style="{StaticResource MeetingControlButton}"
+                        Background="#334155"
+                        Foreground="White"
+                        IsEnabled="False"
+                        ToolTip="Sẽ tích hợp ở bước camera"/>
+                <Button Content="Chia sẻ màn hình"
+                        Style="{StaticResource MeetingControlButton}"
+                        Background="#334155"
+                        Foreground="White"
+                        IsEnabled="False"
+                        ToolTip="Sẽ tích hợp ở bước chia sẻ màn hình"/>
+                <Button Content="Rời cuộc họp"
+                        Style="{StaticResource MeetingControlButton}"
+                        Background="#DC2626"
+                        Foreground="White"
+                        Click="LeaveMeeting_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

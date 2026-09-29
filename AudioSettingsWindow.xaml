@@ -1,0 +1,132 @@
+<Window x:Class="RoomTalk.AudioSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:RoomTalk.Controls"
+        Title="Cài đặt RoomTalk"
+        Icon="Image/RoomTalk.ico"
+        Width="940"
+        Height="680"
+        MinWidth="840"
+        MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        Background="#F3F4F6">
+    <Window.Resources>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="18,7"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="9,5"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="9,6"/>
+        </Style>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="9"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="86"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="76"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#0F172A" Padding="24,15">
+            <Grid>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Cài đặt RoomTalk" Foreground="White" FontSize="25" FontWeight="Bold"/>
+                    <TextBlock Text="Thiết bị và chất lượng âm thanh" Foreground="#CBD5E1" Margin="0,4,0,0"/>
+                </StackPanel>
+                <Button Content="Quét lại thiết bị" Command="{Binding RefreshDevicesCommand}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Style="{StaticResource ActionButton}" Background="#334155" Foreground="White"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="18">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.05*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="0.95*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Thiết bị âm thanh" FontSize="18" FontWeight="SemiBold" Foreground="#0F172A"/>
+                        <TextBlock Text="Microphone" Margin="0,18,0,6" FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding InputDevices}" SelectedItem="{Binding SelectedInputDevice}"
+                                  DisplayMemberPath="DisplayName" IsEnabled="{Binding IsNotTesting}"/>
+                        <TextBlock Text="Mức microphone" Margin="0,18,0,5"/>
+                        <Grid IsEnabled="{Binding IsNotTesting}">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="58"/></Grid.ColumnDefinitions>
+                            <Slider Minimum="0" Maximum="100" Value="{Binding MicrophoneVolume}" TickFrequency="5"/>
+                            <TextBlock Grid.Column="1" Text="{Binding MicrophoneVolume, StringFormat={}{0}%}" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Separator Margin="0,22"/>
+                        <TextBlock Text="Loa hoặc tai nghe" FontWeight="SemiBold"/>
+                        <ComboBox Margin="0,6,0,0" ItemsSource="{Binding OutputDevices}" SelectedItem="{Binding SelectedOutputDevice}"
+                                  DisplayMemberPath="DisplayName" IsEnabled="{Binding IsNotTesting}"/>
+                        <TextBlock Text="Mức phát RoomTalk" Margin="0,18,0,5"/>
+                        <Grid IsEnabled="{Binding IsNotTesting}">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="74"/></Grid.ColumnDefinitions>
+                            <Slider Minimum="0" Maximum="120" Value="{Binding SpeakerVolume}" TickFrequency="5"/>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding SpeakerVolume, StringFormat={}{0}%}" HorizontalAlignment="Right"/>
+                                <TextBlock Text="{Binding SpeakerGainDescription}" Foreground="#64748B" FontSize="11" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Giọng nói" FontSize="18" FontWeight="SemiBold" Foreground="#0F172A"/>
+                        <ComboBox Margin="0,18,0,0" ItemsSource="{Binding Presets}" SelectedItem="{Binding SelectedPreset}"
+                                  DisplayMemberPath="Name" IsEnabled="{Binding IsNotTesting}"/>
+                        <TextBlock Text="{Binding PresetDescription}" TextWrapping="Wrap" Foreground="#475569" Margin="0,10,0,0"/>
+                        <TextBlock Text="{Binding CalibrationSummary}" Margin="0,18,0,0" FontWeight="SemiBold" Foreground="#0F766E"/>
+                        <TextBlock Text="Tín hiệu microphone" Margin="0,16,0,6" FontWeight="SemiBold" Foreground="#334155"/>
+                        <controls:AudioWaveformMeter Height="54" Level="{Binding MicrophoneLevel, Mode=OneWay}"
+                                                     IsActive="{Binding IsTesting, Mode=OneWay}"/>
+                        <UniformGrid Columns="1" Margin="0,20,0,0">
+                            <Button Content="Tự cân mic" Command="{Binding CalibrateMicrophoneCommand}"
+                                    Style="{StaticResource ActionButton}" Background="#0F766E" Foreground="White" Margin="0,0,0,10"/>
+                            <Button Content="Ghi và nghe lại (4 giây)" Command="{Binding TestMicrophoneCommand}"
+                                    Style="{StaticResource ActionButton}" Background="#2563EB" Foreground="White" Margin="0,0,0,10"/>
+                            <Button Content="Thử loa" Command="{Binding TestSpeakerCommand}"
+                                    Style="{StaticResource ActionButton}" Background="#475569" Foreground="White"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="18,12">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" Foreground="#475569" TextWrapping="Wrap" Margin="0,0,18,0"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="Hủy" Command="{Binding CancelCommand}" Style="{StaticResource ActionButton}"
+                            Background="#E2E8F0" Foreground="#0F172A" Margin="0,0,10,0"/>
+                    <Button Content="Lưu" Command="{Binding SaveCommand}" Style="{StaticResource ActionButton}"
+                            Background="#0F766E" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
